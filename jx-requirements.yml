@@ -1,40 +1,105 @@
 autoUpdate:
   enabled: true
-  schedule: '0 0 * * *'
+  schedule: 0 0 * * *
+bootConfigURL: https://github.com/cloudbees/arcalos-boot-config.git
 cluster:
-  clusterName: ""
-  environmentGitOwner: ""
-  project: ""
+  azure: {}
+  chartRepository: http://bucketrepo/bucketrepo/charts/
+  clusterName: touchmangrove
+  environmentGitOwner: stankegeorge
+  environmentGitPublic: true
+  externalDNSSAName: touchmangrove-dn
+  gitKind: github
+  gitName: github
+  gitPublic: true
+  gitServer: https://github.com
+  gke:
+    projectNumber: "932065488448"
+  kanikoSAName: touchmangrove-ko
+  namespace: jx
+  project: cbjx-touchmangrove
   provider: gke
-  zone: ""
-gitops: true
-githubApp:
-  enabled: false
-  url: ""
-  schedule: '0 0 * * *'
+  registry: gcr.io
+  vaultName: touchmangrove
+  vaultSAName: touchmangrove-vt
+  zone: us-central1-c
 environments:
-- key: dev
-- key: staging
-- key: production
+- ingress:
+    cloud_dns_secret_name: external-dns-gcp-sa
+    domain: cbjx-touchmangrove.jxaas.live
+    domainIssuerURL: https://jx-tenant-service-jx.mgmt.jxaas.live
+    externalDNS: true
+    namespaceSubDomain: -jx.
+    tls:
+      email: jenkins-x@cloudbees.com
+      enabled: true
+      production: true
+  key: dev
+  repository: environment-touchmangrove-dev
+- ingress:
+    domain: ""
+    externalDNS: false
+    namespaceSubDomain: ""
+    tls:
+      email: ""
+      enabled: false
+      production: false
+  key: staging
+  repository: environment-touchmangrove-staging
+- ingress:
+    domain: ""
+    externalDNS: false
+    namespaceSubDomain: ""
+    tls:
+      email: ""
+      enabled: false
+      production: false
+  key: production
+  repository: environment-touchmangrove-production
+githubApp:
+  enabled: true
+  schedule: 0 0 * * *
+  url: https://lighthouse-githubapp-jx.mgmt.jxaas.live
+gitops: true
 ingress:
-  domain: ""
+  cloud_dns_secret_name: external-dns-gcp-sa
+  domain: cbjx-touchmangrove.jxaas.live
+  domainIssuerURL: https://jx-tenant-service-jx.mgmt.jxaas.live
   externalDNS: true
+  namespaceSubDomain: -jx.
   tls:
     email: jenkins-x@cloudbees.com
     enabled: true
-    production: false
+    production: true
 kaniko: true
+repository: bucketrepo
 secretStorage: vault
 storage:
+  backup:
+    enabled: true
+    url: gs://cbjx-touchmangrove-backup
   logs:
-    enabled: false
-    url: ""
+    enabled: true
+    url: gs://cbjx-touchmangrove-lts
   reports:
     enabled: false
     url: ""
   repository:
-    enabled: false
-    url: ""
+    enabled: true
+    url: gs://cbjx-touchmangrove-repository
+vault:
+  aws: {}
+  bucket: cbjx-touchmangrove-vault
+  key: touchmangrove-crypto-key
+  keyring: touchmangrove-keyring
+  name: touchmangrove
+  serviceAccount: touchmangrove-vt
 velero:
   namespace: velero
-webhook: prow
+  schedule: ""
+  serviceAccount: touchmangrove-vo
+  ttl: ""
+versionStream:
+  ref: v0.0.358
+  url: https://github.com/cloudbees/arcalos-jenkins-x-versions.git
+webhook: lighthouse

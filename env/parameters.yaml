@@ -1,0 +1,11 @@
+adminUser:
+  password: vault:touchmangrove/adminUser:password
+  username: admin
+enableDocker: false
+pipelineUser:
+  email: arcalos-admin@googlegroups.com
+  token: vault:touchmangrove/pipelineUser:token
+  username: cloudbees-ci-cd[bot]
+prow:
+  hmacToken: vault:touchmangrove/prow:hmacToken
+segmentWriteKey: vault:touchmangrove:segmentWriteKey
